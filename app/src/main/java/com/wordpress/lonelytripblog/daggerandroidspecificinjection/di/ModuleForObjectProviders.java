@@ -1,4 +1,7 @@
-package com.wordpress.lonelytripblog.daggerandroidspecificinjection;
+package com.wordpress.lonelytripblog.daggerandroidspecificinjection.di;
+
+import com.wordpress.lonelytripblog.daggerandroidspecificinjection.dummydata.DummyObjectToInjectInActivity;
+import com.wordpress.lonelytripblog.daggerandroidspecificinjection.dummydata.DummyObjectToInjectInFragment;
 
 import javax.inject.Singleton;
 

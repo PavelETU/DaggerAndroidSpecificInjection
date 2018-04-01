@@ -1,25 +1,41 @@
 package com.wordpress.lonelytripblog.daggerandroidspecificinjection;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.wordpress.lonelytripblog.daggerandroidspecificinjection.dummydata.DummyObjectToInjectInActivity;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity {
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasFragmentInjector;
+
+public class MainActivity extends Activity implements HasFragmentInjector {
 
     @Inject
     DummyObjectToInjectInActivity dummyObjectToInjectInActivity = new DummyObjectToInjectInActivity();
 
+    @Inject
+    DispatchingAndroidInjector<Fragment> injectorForFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.getAppMainComponent().inject(this);
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Snackbar.make(findViewById(R.id.root_layout),
                 dummyObjectToInjectInActivity.getTextToShow(), Snackbar.LENGTH_INDEFINITE)
                 .setAction("Got it", (view) -> {}).show();
-        getSupportFragmentManager().beginTransaction()
+        getFragmentManager().beginTransaction()
                 .replace(R.id.container, new BlankFragment()).commit();
+    }
+
+    @Override
+    public AndroidInjector<Fragment> fragmentInjector() {
+        return injectorForFragment;
     }
 }

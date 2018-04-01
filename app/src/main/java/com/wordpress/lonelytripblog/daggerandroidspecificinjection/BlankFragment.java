@@ -1,15 +1,19 @@
 package com.wordpress.lonelytripblog.daggerandroidspecificinjection;
 
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.wordpress.lonelytripblog.daggerandroidspecificinjection.dummydata.DummyObjectToInjectInFragment;
+
 import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 
 /**
@@ -27,7 +31,7 @@ public class BlankFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        App.getAppMainComponent().inject(this);
+        AndroidInjection.inject(this);
         super.onAttach(context);
     }
 
@@ -37,7 +41,7 @@ public class BlankFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_blank, container, false);
-        ((TextView)view.findViewById(R.id.fragment_text)).setText(dummyObjectToInjectInFragment.getTextToShow());
+        ((TextView) view.findViewById(R.id.fragment_text)).setText(dummyObjectToInjectInFragment.getTextToShow());
         return view;
     }
 
