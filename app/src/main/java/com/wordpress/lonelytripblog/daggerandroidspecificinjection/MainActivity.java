@@ -17,7 +17,7 @@ import dagger.android.HasFragmentInjector;
 public class MainActivity extends Activity implements HasFragmentInjector {
 
     @Inject
-    DummyObjectToInjectInActivity dummyObjectToInjectInActivity = new DummyObjectToInjectInActivity();
+    DummyObjectToInjectInActivity dummyObjectToInjectInActivity;
 
     @Inject
     DispatchingAndroidInjector<Fragment> injectorForFragment;
