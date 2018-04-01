@@ -1,6 +1,7 @@
 package com.wordpress.lonelytripblog.daggerandroidspecificinjection.di;
 
 import com.wordpress.lonelytripblog.daggerandroidspecificinjection.App;
+import com.wordpress.lonelytripblog.daggerandroidspecificinjection.MainActivity;
 
 import javax.inject.Singleton;
 
@@ -9,10 +10,10 @@ import dagger.android.AndroidInjectionModule;
 
 @Singleton
 @Component(modules = {AndroidInjectionModule.class,
-        ActivityModule.class,
+        FragmentModule.class,
         ModuleForObjectProviders.class})
 public interface AppMainComponent {
 
-    void inject(App app);
+    void inject(MainActivity mainActivity);
 
 }

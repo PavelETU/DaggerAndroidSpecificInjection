@@ -2,6 +2,8 @@ package com.wordpress.lonelytripblog.daggerandroidspecificinjection;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 
 import com.wordpress.lonelytripblog.daggerandroidspecificinjection.dummydata.DummyObjectToInjectInActivity;
 
@@ -9,16 +11,15 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.DaggerAppCompatActivity;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public class MainActivity extends DaggerAppCompatActivity implements HasSupportFragmentInjector {
+public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+
+    private DummyObjectToInjectInActivity dummyObjectToInjectInActivity =
+            new DummyObjectToInjectInActivity();
 
     @Inject
-    DummyObjectToInjectInActivity dummyObjectToInjectInActivity;
-
-    @Inject
-    DispatchingAndroidInjector<android.support.v4.app.Fragment> injectorForFragment;
+    DispatchingAndroidInjector<Fragment> injectorForFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class MainActivity extends DaggerAppCompatActivity implements HasSupportF
     }
 
     @Override
-    public AndroidInjector<android.support.v4.app.Fragment> supportFragmentInjector() {
+    public AndroidInjector<Fragment> supportFragmentInjector() {
         return injectorForFragment;
     }
 }

@@ -5,36 +5,38 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentManager.FragmentLifecycleCallbacks;
 
+import com.wordpress.lonelytripblog.daggerandroidspecificinjection.di.AppMainComponent;
 import com.wordpress.lonelytripblog.daggerandroidspecificinjection.di.DaggerAppMainComponent;
 
-import javax.inject.Inject;
-
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
 import dagger.android.support.AndroidSupportInjection;
 
-public class App extends Application implements HasActivityInjector {
+public class App extends Application {
 
-    @Inject
-    DispatchingAndroidInjector<Activity> dispatchingActivityInjector;
+    private AppMainComponent mainComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        DaggerAppMainComponent.create().inject(this);
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                ((AppCompatActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(new android.support.v4.app.FragmentManager.FragmentLifecycleCallbacks() {
-                    @Override
-                    public void onFragmentPreAttached(FragmentManager fm, Fragment f, Context context) {
-                        AndroidSupportInjection.inject(f);
+                if (activity instanceof MainActivity) {
+                    if (mainComponent == null) {
+                        mainComponent = DaggerAppMainComponent.create();
                     }
-                }, true);
+                    mainComponent.inject((MainActivity) activity);
+                }
+                ((FragmentActivity) activity).getSupportFragmentManager()
+                        .registerFragmentLifecycleCallbacks(new FragmentLifecycleCallbacks() {
+                            @Override
+                            public void onFragmentPreAttached(FragmentManager fm, Fragment f, Context context) {
+                                AndroidSupportInjection.inject(f);
+                            }
+                        }, true);
             }
 
             @Override
@@ -69,8 +71,4 @@ public class App extends Application implements HasActivityInjector {
         });
     }
 
-    @Override
-    public AndroidInjector<Activity> activityInjector() {
-        return dispatchingActivityInjector;
-    }
 }
