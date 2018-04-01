@@ -13,13 +13,11 @@ import com.wordpress.lonelytripblog.daggerandroidspecificinjection.dummydata.Dum
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjection;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BlankFragment extends Fragment {
+public class BlankFragment extends android.support.v4.app.Fragment implements ShouldBeInjected {
 
     @Inject
     DummyObjectToInjectInFragment dummyObjectToInjectInFragment;
@@ -31,7 +29,6 @@ public class BlankFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        AndroidInjection.inject(this);
         super.onAttach(context);
     }
 
